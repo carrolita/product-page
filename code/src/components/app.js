@@ -5,6 +5,21 @@ const productsJson = require("./../products.json");
 console.log("Products: (Remove this line in app.js!)", productsJson)
 
 class App extends React.Component {
+  state = {
+    products: []
+  }
+
+  componentWillMount() {
+    fetch('http://localhost:8080/products')
+      .then(data => data.json())
+      .then(data => {
+        this.setState({
+          products: data
+        })
+      })
+      .catch(err => console.log(err))
+  }
+
 
   render() {
     console.log(productsJson);
@@ -17,7 +32,7 @@ class App extends React.Component {
         </div>
         <div className="container">
           {
-            productsJson.products.map((product) =>
+            this.state.products.map((product) =>
               <Item
                 key={product.name}
                 title={product.name}
